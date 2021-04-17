@@ -7,88 +7,160 @@ import Home from "./HomeComponent";
 import Blog from "./BlogComponent";
 import ContactUs from "./ContactUsComponent";
 import OurTeam from "./OurTeamComponent";
+import { Icon } from "react-native-elements";
+import { StyleSheet } from "react-native";
+
+// -------------------  STACK NAVIGATORS ---------------------------
 
 const HomeNavigator = createStackNavigator(
   {
     Home: { screen: Home },
   },
   {
-    defaultNavigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#5637DD",
+        backgroundColor: "#292b2c",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#32a883",
       headerTitleStyle: {
-        color: "#fff",
+        color: "#32a883",
       },
-    },
+      headerLeft: (
+        <Icon
+          name="globe"
+          type="font-awesome"
+          iconStyle={styles.stackIcon}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      ),
+    }),
   }
 );
 
 const OurTeamNavigator = createStackNavigator(
   {
-    Home: { screen: OurTeam },
+    OurTeam: { screen: OurTeam },
   },
   {
-    defaultNavigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#5637DD",
+        backgroundColor: "#292b2c",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#32a883",
       headerTitleStyle: {
-        color: "#fff",
+        color: "#32a883",
       },
-    },
+      headerLeft: (
+        <Icon
+          name="users"
+          type="font-awesome"
+          iconStyle={styles.stackIcon}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      ),
+    }),
   }
 );
 
 const ContactUsNavigator = createStackNavigator(
   {
-    Home: { screen: ContactUs },
+    ContactUs: { screen: ContactUs },
   },
   {
-    defaultNavigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#5637DD",
+        backgroundColor: "#292b2c",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#32a883",
       headerTitleStyle: {
-        color: "#fff",
+        color: "#32a883",
       },
-    },
+      headerLeft: (
+        <Icon
+          name="phone"
+          type="font-awesome"
+          iconStyle={styles.stackIcon}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      ),
+    }),
   }
 );
 
 const BlogNavigator = createStackNavigator(
   {
-    Home: { screen: Blog },
+    Blog: { screen: Blog },
   },
   {
-    defaultNavigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#5637DD",
+        backgroundColor: "#292b2c",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#32a883",
       headerTitleStyle: {
-        color: "#fff",
+        color: "#32a883",
       },
+      headerLeft: (
+        <Icon
+          name="pencil"
+          type="font-awesome"
+          iconStyle={styles.stackIcon}
+          onPress={() => navigation.toggleDrawer()}
+        />
+      ),
+    }),
+  }
+);
+
+// -------------------  DRAWER NAVIGATOR ---------------------------
+
+const MainNavigator = createDrawerNavigator(
+  {
+    Home: {
+      screen: HomeNavigator,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="globe" type="font-awesome" size={24} color={tintColor} />
+        ),
+      },
+    },
+    OurTeam: {
+      screen: OurTeamNavigator,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="users" type="font-awesome" size={24} color={tintColor} />
+        ),
+      },
+    },
+    ContactUs: {
+      screen: ContactUsNavigator,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="phone" type="font-awesome" size={24} color={tintColor} />
+        ),
+      },
+    },
+    Blog: {
+      screen: BlogNavigator,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="pencil" type="font-awesome" size={24} color={tintColor} />
+        ),
+      },
+    },
+  },
+  {
+    drawerBackgroundColor: "#292b2c",
+    contentOptions: {
+      activeTintColor: "#ddba1d",
+      inactiveTintColor: "#32a883",
     },
   }
 );
 
-const MainNavigator = createDrawerNavigator(
-  {
-    Home: { screen: HomeNavigator },
-    OurTeam: { screen: OurTeamNavigator },
-    ContactUs: { screen: ContactUsNavigator },
-    Blog: { screen: BlogNavigator },
-  },
-  {
-    drawerBackgroundColor: "#CEC8FF",
-  }
-);
-
 const AppNavigator = createAppContainer(MainNavigator);
+
+// -------------------  MAIN COMPONENT ---------------------------
 
 class Main extends Component {
   render() {
@@ -105,5 +177,13 @@ class Main extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  stackIcon: {
+    marginLeft: 10,
+    color: "#32a883",
+    fontSize: 24,
+  },
+});
 
 export default Main;
