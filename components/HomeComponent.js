@@ -6,8 +6,6 @@ import { Card, ListItem, Text } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GAME_CARDS } from "./shared/gameCards";
 
-// const imagePath = "./images/games/";
-
 // ------------ Header - Function component only used on Home Page
 
 class Header extends Component {
@@ -72,32 +70,41 @@ function HeaderImageSection() {
 
 // ------------ GAMECARD COMPONENT ----------------------
 
-function GameCard(props) {
-  return (
-    <Card containerStyle={styles.card}>
-      <Image
-        resizeMode={"cover"}
-        style={{ width: "100%", height: 200 }}
-        source={props.image}
-      />
-      <Text style={styles.cardTitle}>{props.name}</Text>
-      <Text style={styles.cardText}>{props.description}</Text>
-      <Text style={styles.cardText}>Similar Games:</Text>
-
-      <Text style={styles.cardText}>Coming {props.releaseDate}</Text>
-    </Card>
-  );
+class GameCard extends Component {
+  renderSimilarGameCardItem = ({ item }) => {
+    return <SimilarGameCardItem item={item} />;
+  };
+  render() {
+    return (
+      <Card containerStyle={styles.card}>
+        <Image
+          resizeMode={"cover"}
+          style={{ width: "100%", height: 200 }}
+          source={this.props.image}
+        />
+        <Text style={styles.cardTitle}>{this.props.name}</Text>
+        <Text style={styles.cardText}>{this.props.description}</Text>
+        <Text style={styles.cardText}>Similar Games:</Text>
+        <FlatList
+          data={this.props.similarGames}
+          renderItem={this.renderSimilarGameCardItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+        <Text style={styles.cardText}>Coming {this.props.releaseDate}</Text>
+      </Card>
+    );
+  }
 }
 
 // ------------ SIMILAR GAME COMPONENT ------------------
 
-// function SimilarGame(props) {
-//   return (
-//     <TouchableOpacity>
-//       <Text>{props.name}</Text>
-//     </TouchableOpacity>
-//   );
-// }
+function SimilarGameCardItem(props) {
+  return (
+    <TouchableOpacity>
+      <Text style={styles.linkText}>{props.item.name}</Text>
+    </TouchableOpacity>
+  );
+}
 
 // ------------ HOME COMPONENT --------------------------
 
@@ -117,7 +124,7 @@ class Home extends Component {
         image={item.image}
         name={item.name}
         description={item.description}
-        releaseDate={item.release_date}
+        releaseDate={item.releaseDate}
         similarGames={item.similarGames}
       />
     );
@@ -166,6 +173,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginVertical: 10,
     textAlign: "center",
+  },
+  linkText: {
+    textAlign: "center",
+    fontSize: 17,
+    color: "#ddba1d",
   },
 });
 

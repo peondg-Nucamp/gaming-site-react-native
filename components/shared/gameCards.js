@@ -6,8 +6,8 @@ export const GAME_CARDS = [
     name: "Village Protectors",
     image: images.villageProtectorsImage,
     description: "Village Protectors is an isometric style RPG-Strategy game.",
-    release_date: "June 1, 2021",
-    similar_games: [
+    releaseDate: "June 1, 2021",
+    similarGames: [
       {
         id: "#shiningForce",
         name: "Shining Force",
@@ -31,8 +31,8 @@ export const GAME_CARDS = [
     name: "A Good Day For a Haunting",
     image: images.goodDayForAHauntingImage,
     description: "Check out our take on the classic 2-D platform game.",
-    release_date: "July 12, 2021",
-    similar_games: [
+    releaseDate: "July 12, 2021",
+    similarGames: [
       {
         id: "#castlevania",
         name: "Castlevania",
@@ -56,8 +56,8 @@ export const GAME_CARDS = [
     name: "Space Adventure",
     image: images.spaceAdventureImage,
     description: "An adventure game that is very similar to 90's PC games.",
-    release_date: "Sept. 4, 2021",
-    similar_games: [
+    releaseDate: "Sept. 4, 2021",
+    similarGames: [
       {
         id: "kingsQuest",
         name: "King's Quest",
