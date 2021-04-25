@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { Button } from "react-native";
+import { Button, FlatList } from "react-native";
+import { ShadowPropTypesIOS } from "react-native";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
-import { Card, Text } from "react-native-elements";
+import { Card, ListItem, Text } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { GAME_CARDS } from "./shared/gameCards";
+
+// const imagePath = "./images/games/";
 
 // ------------ Header - Function component only used on Home Page
 
@@ -66,17 +70,68 @@ function HeaderImageSection() {
   );
 }
 
+// ------------ GAMECARD COMPONENT ----------------------
+
+function GameCard(props) {
+  return (
+    <Card containerStyle={styles.card}>
+      <Image
+        resizeMode={"cover"}
+        style={{ width: "100%", height: 200 }}
+        source={props.image}
+      />
+      <Text style={styles.cardTitle}>{props.name}</Text>
+      <Text style={styles.cardText}>{props.description}</Text>
+      <Text style={styles.cardText}>Similar Games:</Text>
+
+      <Text style={styles.cardText}>Coming {props.releaseDate}</Text>
+    </Card>
+  );
+}
+
+// ------------ SIMILAR GAME COMPONENT ------------------
+
+// function SimilarGame(props) {
+//   return (
+//     <TouchableOpacity>
+//       <Text>{props.name}</Text>
+//     </TouchableOpacity>
+//   );
+// }
+
 // ------------ HOME COMPONENT --------------------------
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gameCards: GAME_CARDS,
+    };
+  }
   static navigationOptions = {
     title: "Home",
+  };
+  renderGameCardItem = ({ item }) => {
+    return (
+      <GameCard
+        image={item.image}
+        name={item.name}
+        description={item.description}
+        releaseDate={item.release_date}
+        similarGames={item.similarGames}
+      />
+    );
   };
   render() {
     return (
       <ScrollView>
         <HeaderImageSection />
         <Header />
+        <FlatList
+          data={this.state.gameCards}
+          renderItem={this.renderGameCardItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </ScrollView>
     );
   }
@@ -97,6 +152,20 @@ const styles = StyleSheet.create({
   },
   readMoreButton: {
     alignSelf: "center",
+  },
+  card: {
+    backgroundColor: "#6c757d",
+  },
+  cardTitle: {
+    fontSize: 24,
+    color: "#32a883",
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  cardText: {
+    fontSize: 17,
+    marginVertical: 10,
+    textAlign: "center",
   },
 });
 
