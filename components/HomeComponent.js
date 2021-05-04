@@ -1,10 +1,99 @@
 import React, { Component } from "react";
-import { Button, FlatList } from "react-native";
-import { ShadowPropTypesIOS } from "react-native";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Button,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Card, ListItem, Text } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { GAME_CARDS } from "./shared/gameCards";
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
+import Loading from "./LoadingComponent";
+
+const mapStateToProps = (state) => {
+  return {
+    gameCards: state.gameCards,
+    similarGames: state.similarGames,
+  };
+};
+
+// ------------- GAME MODAL COMPONENT ----------------
+
+class GameModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+    };
+  }
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
+  render() {
+    return (
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <Card>
+              <Text style={styles.cardTitleSimilarGameText}>
+                {this.props.item.name}
+              </Text>
+              <View
+                style={{
+                  borderBottomColor: "#32a883",
+                  borderBottomWidth: 1,
+                  marginBottom: 15,
+                }}
+              />
+              <Image
+                resizeMode={"cover"}
+                style={{ width: "100%", height: 200 }}
+                source={{ uri: baseUrl + this.props.item.image }}
+              />
+              <Text style={styles.descriptionText}>
+                {this.props.item.description}
+              </Text>
+              <View
+                style={{
+                  borderBottomColor: "#32a883",
+                  borderBottomWidth: 1,
+                  marginTop: 10,
+                }}
+              />
+              <Text style={styles.dateText}>
+                Source: {this.props.item.sources}
+              </Text>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => this.setModalVisible(!this.state.modalVisible)}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </TouchableOpacity>
+            </Card>
+          </View>
+        </Modal>
+        <TouchableOpacity
+          onPress={() => this.setModalVisible(!this.state.modalVisible)}
+        >
+          <Text style={styles.linkText}>{this.props.item.name}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
 
 // ------------ Header - Function component only used on Home Page
 
@@ -56,87 +145,75 @@ class Header extends Component {
 }
 
 // --------------- HeaderImageSection - Functional Component
+
 function HeaderImageSection() {
   return (
     <View>
       <Image
         resizeMode={"cover"}
         style={{ width: "100%", height: 200 }}
-        source={require("./images/background-image.jpg")}
+        source={{ uri: baseUrl + "images/background-image.jpg" }}
       />
     </View>
   );
 }
 
-// ------------ GAMECARD COMPONENT ----------------------
-
-class GameCard extends Component {
-  renderSimilarGameCardItem = ({ item }) => {
-    return <SimilarGameCardItem item={item} />;
-  };
-  render() {
-    return (
-      <Card containerStyle={styles.card}>
-        <Image
-          resizeMode={"cover"}
-          style={{ width: "100%", height: 200 }}
-          source={this.props.image}
-        />
-        <Text style={styles.cardTitle}>{this.props.name}</Text>
-        <Text style={styles.cardText}>{this.props.description}</Text>
-        <Text style={styles.cardText}>Similar Games:</Text>
-        <FlatList
-          data={this.props.similarGames}
-          renderItem={this.renderSimilarGameCardItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-        <Text style={styles.cardText}>Coming {this.props.releaseDate}</Text>
-      </Card>
-    );
-  }
+function renderSimilarGameCardItem({ item }) {
+  return <GameModal item={item} />;
 }
 
-// ------------ SIMILAR GAME COMPONENT ------------------
-
-function SimilarGameCardItem(props) {
+// ------------ GAMECARD COMPONENT ----------------------
+function GameCard(props) {
   return (
-    <TouchableOpacity>
-      <Text style={styles.linkText}>{props.item.name}</Text>
-    </TouchableOpacity>
+    <Card containerStyle={styles.card}>
+      <Image
+        resizeMode={"cover"}
+        style={{ width: "100%", height: 200 }}
+        source={{ uri: baseUrl + props.item.image }}
+      />
+      <Text style={styles.cardTitleText}>{props.item.name}</Text>
+      <Text style={styles.descriptionText}>{props.item.description}</Text>
+      <Text style={styles.similarGameText}>Similar Games:</Text>
+      {/* <FlatList
+        data={props.item.similarGames}
+        renderItem={renderSimilarGameCardItem}
+        keyExtractor={(item) => item.id.toString()}
+      /> */}
+      <Text style={styles.dateText}>Coming {props.item.releaseDate}</Text>
+    </Card>
   );
 }
 
 // ------------ HOME COMPONENT --------------------------
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gameCards: GAME_CARDS,
-    };
-  }
   static navigationOptions = {
     title: "Home",
   };
-  renderGameCardItem = ({ item }) => {
-    return (
-      <GameCard
-        image={item.image}
-        name={item.name}
-        description={item.description}
-        releaseDate={item.releaseDate}
-        similarGames={item.similarGames}
-      />
-    );
-  };
   render() {
+    console.log(
+      "similar games: " + this.props.similarGames.similarGames[0].name
+    );
+    const renderGameCardItem = ({ item }) => {
+      return <GameCard item={item} />;
+    };
+    if (this.props.gameCards.isLoading) {
+      return <Loading />;
+    }
+    if (this.props.gameCards.errMess) {
+      return (
+        <View>
+          <Text>{this.props.errMess}</Text>
+        </View>
+      );
+    }
     return (
       <ScrollView>
         <HeaderImageSection />
         <Header />
         <FlatList
-          data={this.state.gameCards}
-          renderItem={this.renderGameCardItem}
+          data={this.props.gameCards.gameCards}
+          renderItem={renderGameCardItem}
           keyExtractor={(item) => item.id.toString()}
         />
       </ScrollView>
@@ -163,22 +240,58 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#6c757d",
   },
-  cardTitle: {
+  cardTitleText: {
     fontSize: 24,
     color: "#32a883",
     marginVertical: 10,
     textAlign: "center",
   },
-  cardText: {
-    fontSize: 17,
+  cardTitleSimilarGameText: {
+    fontSize: 24,
+    color: "#32a883",
     marginVertical: 10,
+  },
+  descriptionText: {
+    fontSize: 18,
+    marginTop: 2,
+    marginBottom: 8,
+  },
+  similarGameText: {
+    fontSize: 18,
     textAlign: "center",
   },
   linkText: {
     textAlign: "center",
+    fontSize: 20,
+    color: "white",
+    backgroundColor: "#ddba1d",
+    padding: 8,
+  },
+  dateText: {
     fontSize: 17,
-    color: "#ddba1d",
+    marginTop: 15,
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  button: {
+    padding: 10,
+    width: 100,
+    alignSelf: "flex-end",
+  },
+  buttonClose: {
+    backgroundColor: "#32a883",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
-export default Home;
+export default connect(mapStateToProps)(Home);

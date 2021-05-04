@@ -9,6 +9,13 @@ import ContactUs from "./ContactUsComponent";
 import OurTeam from "./OurTeamComponent";
 import { Icon } from "react-native-elements";
 import { StyleSheet } from "react-native";
+import { connect } from "react-redux";
+import { fetchGameCards, fetchSimilarGames } from "../redux/ActionCreators";
+
+const mapDispatchToProps = {
+  fetchGameCards,
+  fetchSimilarGames,
+};
 
 // -------------------  STACK NAVIGATORS ---------------------------
 
@@ -163,6 +170,11 @@ const AppNavigator = createAppContainer(MainNavigator);
 // -------------------  MAIN COMPONENT ---------------------------
 
 class Main extends Component {
+  componentDidMount() {
+    this.props.fetchGameCards();
+    this.props.fetchSimilarGames();
+  }
+
   render() {
     return (
       <View
@@ -186,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);

@@ -11,7 +11,7 @@ export const GAME_CARDS = [
       {
         id: "#shiningForce",
         name: "Shining Force",
-        image: "/images/games/shining-force.jpg",
+        image: images.shiningForceImage,
         description:
           "Shining Force and its sequels are series of fantasy turn-based tactics role-playing video game. While beginning on Sega-based consoles, later releases and remakes were made by other companies.",
         sources: "Wikipedia and Old School Game Vault",
@@ -19,7 +19,7 @@ export const GAME_CARDS = [
       {
         id: "#fireEmblem",
         name: "Fire Emblem",
-        image: "/images/games/awakening-noscale.jpg",
+        image: images.fireEmblemImage,
         description:
           "Fire Emblem is a turn-based strategy role-playing game (SRPG for short) series which sets itself apart with permanent death, random level-ups and dedicated battle screens with pretty combat animations. It featured mostly on Nintendo consoles.",
         sources: "Destructoid.com",
@@ -36,7 +36,7 @@ export const GAME_CARDS = [
       {
         id: "#castlevania",
         name: "Castlevania",
-        image: "/images/games/CastlevaniaBloodlines.png",
+        image: images.castlevaniaImage,
         description:
           "Castlevania is an action-adventure gothic horror video game series about vampire hunters created and developed by Konami.",
         sources: "Wikipedia",
@@ -44,7 +44,7 @@ export const GAME_CARDS = [
       {
         id: "ghostsAndGoblins",
         name: "Ghosts and Goblins",
-        image: "/images/games/ghosts-and-goblins.jpg",
+        image: images.ghostsAndGoblinsImage,
         description:
           "Ghosts and Goblins is a rather difficult early action horror game starring King Arthur against a horde of creatures that never quite seem to stop coming.",
         sources: "mobygames.com",
@@ -61,7 +61,7 @@ export const GAME_CARDS = [
       {
         id: "kingsQuest",
         name: "King's Quest",
-        image: "/images/games/kq1.png",
+        image: images.kingsQuestImage,
         description:
           "King's Quest is a graphic adventure game series, released between 1980 and 2016 and created by the American software company Sierra Entertainment. It is widely considered a classic series from the golden era of adventure games.",
         sources: "Wikipedia and sierrawallpaper.com",
@@ -69,7 +69,7 @@ export const GAME_CARDS = [
       {
         id: "spaceQuest",
         name: "Space Quest",
-        image: "/images/games/sq1.png",
+        image: images.spaceQuestImage,
         description:
           "Space Quest is a series of six comic science fiction adventure games released between 1986 and 1995. This was also a series developed by Sierra Online/Sierra Entertainment and was a more humorous science fiction adventure featuring Roger Wilco, a janitor who is the main protagonist.",
         sources: "gbatemp.net",
