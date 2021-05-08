@@ -159,7 +159,11 @@ function HeaderImageSection() {
 }
 
 function renderSimilarGameCardItem({ item }) {
-  return <GameModal item={item} />;
+  return (
+    <View>
+      <Text>{item.name}</Text>
+    </View>
+  );
 }
 
 // ------------ GAMECARD COMPONENT ----------------------
@@ -175,7 +179,7 @@ function GameCard(props) {
       <Text style={styles.descriptionText}>{props.item.description}</Text>
       <Text style={styles.similarGameText}>Similar Games:</Text>
       {/* <FlatList
-        data={props.item.similarGames}
+        data={props.similarGames.similarGames}
         renderItem={renderSimilarGameCardItem}
         keyExtractor={(item) => item.id.toString()}
       /> */}
@@ -191,9 +195,6 @@ class Home extends Component {
     title: "Home",
   };
   render() {
-    console.log(
-      "similar games: " + this.props.similarGames.similarGames[0].name
-    );
     const renderGameCardItem = ({ item }) => {
       return <GameCard item={item} />;
     };

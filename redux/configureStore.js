@@ -4,6 +4,7 @@ import logger from "redux-logger";
 import { persistCombineReducers, persistStore } from "redux-persist";
 import AsyncStorage from "@react-native-community/async-storage";
 import { gameCards } from "./gameCards";
+import { similarGames } from "./similarGames";
 
 const config = {
   key: "root",
@@ -15,6 +16,7 @@ export const ConfigureStore = () => {
   const store = createStore(
     persistCombineReducers(config, {
       gameCards,
+      similarGames,
     }),
     // applyMiddleware(thunk, logger)
     applyMiddleware(thunk)
